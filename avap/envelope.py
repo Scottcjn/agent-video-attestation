@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 AVAP envelope: the signed, anchorable unit of agent-to-agent information transfer.
 

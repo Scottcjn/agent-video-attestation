@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 """
 AVAP demo: Agent Alice transfers a task request to Agent Bob *through a video*,
 signed and anchored, and Bob verifies it end to end. Runs fully offline.

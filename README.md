@@ -1,3 +1,5 @@
+[![BCOS Certified](https://img.shields.io/badge/BCOS-Certified-brightgreen?style=flat)](BCOS.md)
+
 # AVAP — Agent Video Attestation Protocol
 
 **Agent-to-agent information transfer, carried inside video files, signed by the

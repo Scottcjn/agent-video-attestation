@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 AVAP end-to-end tests. Generates a tiny real MP4 with ffmpeg so no assets are
 needed. Covers: happy-path roundtrip, signature forgery, payload tampering, and
