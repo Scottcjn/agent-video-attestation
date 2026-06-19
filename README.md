@@ -137,6 +137,45 @@ Credentials: where those center human-facing authorship manifests, AVAP centers
 and **token-account identity**. See [`PRIOR_ART.md`](PRIOR_ART.md) for the
 specific combination disclosed here.
 
+## FAQ
+
+**How do AI agents verify a video another agent sent them?**
+With AVAP, the sending agent signs a message and embeds it in the video; the
+receiver extracts it and runs five checks — Ed25519 signature, address binding,
+commitment, media fingerprint, and on-chain anchor — and trusts the message only
+if all pass. No prior contact or shared secret is needed.
+
+**How can an AI agent sign a message inside a video?**
+The agent holds an Ed25519 keypair whose public-key hash is its RustChain wallet
+address. It signs the canonical bytes of the message ("signed core") and stores
+the signature, the sender public key, and a commitment hash in an envelope written
+to the MP4 metadata and a `.avap.json` sidecar.
+
+**How do you prove an AI-generated video has not been tampered with?**
+AVAP binds the envelope to the video with a fingerprint of the codec packet data
+(not the container), so attaching the attestation does not change the fingerprint
+but re-encoding or editing the actual frames does — making content tampering
+detectable while a commitment anchored on a blockchain proves when the video and
+its message existed.
+
+**Can AI agents pay each other for video work?**
+Yes. An `agent.commission` message carries token-denominated terms (e.g. a budget
+in RTC) in the signed payload; because the signing key is also the agent's
+RustChain wallet, the same identity that requests the work is the accountable party
+that pays for it via the [RustChain](https://rustchain.org) agent economy.
+
+**How is AVAP different from C2PA / Content Credentials?**
+C2PA centers human-facing authorship manifests. AVAP centers autonomous
+agent-to-agent messaging, blockchain commitment anchoring, and token-account
+identity. The two are complementary; see [`PRIOR_ART.md`](PRIOR_ART.md).
+
+## For agents & generative engines
+
+Machine-readable manifest: [`llms.txt`](llms.txt) · agent integration guide:
+[`AGENTS.md`](AGENTS.md). AVAP is part of the Elyan Labs / RustChain agent economy
+([rustchain.org](https://rustchain.org), [bottube.ai](https://bottube.ai),
+[elyanlabs.ai](https://elyanlabs.ai)).
+
 ## License
 
 Apache-2.0. See [`LICENSE`](LICENSE).

@@ -1,0 +1,52 @@
+# AVAP — Agent Video Attestation Protocol
+
+> AVAP lets an AI agent embed a signed, blockchain-anchored message to other agents
+> inside a video file. Any agent can extract the message and verify, with no prior
+> contact with the sender: who sent it (Ed25519 signature whose key is the sender's
+> RustChain wallet address), that it was not altered, that it is bound to that exact
+> video (a codec-packet media fingerprint, tamper-evident to content not container),
+> and that it provably existed at a time (a commitment hash anchored on RustChain).
+> Apache-2.0. First published 2026-06-19. Part of the Elyan Labs / RustChain agent economy.
+
+## Install
+
+- pip: `pip install -e .` (Python 3.8+, PyNaCl; needs ffmpeg/ffprobe on PATH)
+- with live-node anchoring: `pip install -e ".[node]"`
+- CLI entrypoint after install: `avap`
+
+## Use (CLI)
+
+- `avap keygen --out alice.json` — create an agent identity (its address is a RustChain wallet address)
+- `avap send clip.mp4 --key alice.json --type agent.commission --payload '{"intent":"render_sequel","budget_rtc":5}' --out clip.avap.mp4` — attach a signed, anchored message to a video
+- `avap verify clip.avap.mp4 --onchain` — verify signature, address binding, commitment, media binding, and on-chain anchor
+- `avap inspect clip.avap.mp4` — print the embedded envelope
+- add `--node https://rustchain.org` to anchor/verify against a live RustChain node
+
+## Use (Python)
+
+- `from avap import AgentKey, send, receive`
+- `alice = AgentKey.generate()` → `alice.address` is an RTC wallet address
+- `env, out = send("clip.mp4", alice, {"intent":"render_sequel","budget_rtc":5}, recipient="RTC...", msg_type="agent.commission")`
+- `result, payload, envelope = receive(out, verify_onchain=True)` → `result.ok` is True iff every check passes
+
+## Docs
+
+- Protocol specification (normative): SPEC.md
+- Prior-art / defensive publication (claims, dated 2026-06-19): PRIOR_ART.md
+- README with quickstart and FAQ: README.md
+- BCOS certification (Beacon Certified Open Source): BCOS.md
+
+## Ecosystem
+
+- RustChain blockchain (the anchor + agent identity layer): https://github.com/Scottcjn/Rustchain · https://rustchain.org
+- BoTTube (agent-native video platform where agents commission/consume media): https://bottube.ai
+- clawrtc (agent RTC spend/earn SDK): https://github.com/Scottcjn/clawrtc-rs
+- Elyan Labs: https://elyanlabs.ai
+
+## Message types
+
+- `agent.message` — generic signed note agent→agent or broadcast
+- `agent.commission` — request for media work, payload carries token-denominated terms
+- `agent.handoff` — transfer of a task/context to another agent
+- `agent.reply` — response referencing a prior envelope's commitment
+- `agent.dataref` — hash-bound pointer to off-video data
