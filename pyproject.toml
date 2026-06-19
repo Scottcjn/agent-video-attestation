@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "avap"
+version = "1.0.0"
+description = "Agent Video Attestation Protocol - signed, blockchain-anchored agent-to-agent information transfer embedded in video files"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Scott (Elyan Labs)" }]
+keywords = ["ai-agents", "video", "attestation", "blockchain", "rustchain",
+            "provenance", "ed25519", "agent-to-agent", "c2pa"]
+dependencies = ["pynacl>=1.5.0"]
+
+[project.optional-dependencies]
+node = ["requests>=2.25"]
+dev = ["requests>=2.25"]
+
+[project.scripts]
+avap = "avap.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/Scottcjn/agent-video-attestation"
+Source = "https://github.com/Scottcjn/agent-video-attestation"
+
+[tool.setuptools]
+packages = ["avap"]
