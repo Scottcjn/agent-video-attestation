@@ -4,7 +4,6 @@ AVAP end-to-end tests. Generates a tiny real MP4 with ffmpeg so no assets are
 needed. Covers: happy-path roundtrip, signature forgery, payload tampering, and
 media tampering (re-encode) detection.
 """
-import json
 import os
 import shutil
 import subprocess
@@ -13,8 +12,6 @@ import unittest
 
 from avap import (
     AgentKey,
-    build_envelope,
-    decode_payload,
     extract_envelope,
     media_fingerprint,
     receive,

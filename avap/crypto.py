@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from typing import Any, Dict, Tuple
+from typing import Any
 
 from nacl.signing import SigningKey, VerifyKey
 from nacl.exceptions import BadSignatureError
