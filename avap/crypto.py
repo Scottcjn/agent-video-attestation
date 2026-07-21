@@ -82,4 +82,10 @@ def verify_signature(public_key_hex: str, message: bytes, signature_hex: str) ->
 
 
 def address_matches_pubkey(address: str, public_key_hex: str) -> bool:
-    return address == address_from_public_key(public_key_hex)
+    try:
+        return address == address_from_public_key(public_key_hex)
+    except ValueError:
+        # Malformed (non-hex / odd-length) public key from an untrusted
+        # envelope must fail the binding check, not crash the verifier.
+        # Mirrors verify_signature's contract above.
+        return False
