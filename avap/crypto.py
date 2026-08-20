@@ -77,9 +77,17 @@ def verify_signature(public_key_hex: str, message: bytes, signature_hex: str) ->
             message, bytes.fromhex(signature_hex)
         )
         return True
-    except (BadSignatureError, ValueError):
+    except (BadSignatureError, ValueError, TypeError):
         return False
 
 
 def address_matches_pubkey(address: str, public_key_hex: str) -> bool:
-    return address == address_from_public_key(public_key_hex)
+    try:
+        return address == address_from_public_key(public_key_hex)
+    except (ValueError, TypeError):
+        # Malformed (non-hex / odd-length / non-string, e.g. a JSON number
+        # or list from an untrusted envelope) public key must fail the
+        # binding check, not crash the verifier. Mirrors verify_signature's
+        # contract above: bytes.fromhex() raises ValueError on bad hex but
+        # TypeError when handed a non-str (int, list, None, ...).
+        return False
